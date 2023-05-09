@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "./cartSlice";
+import { clearCart, decrease, increase, removeItem } from "./cartSlice";
+import { openModal } from "../modal/modalSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -21,16 +22,29 @@ const Cart = () => {
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
           <span>{title}</span>
-          <img src={img} />
+          <img src={img} style={{ width: "50px" }} />
           <span>{price}</span>
-          <button style={{ width: "150px", background: "none", color: "red" }}>
+          <button
+            onClick={() => dispatch(removeItem(id))}
+            style={{ width: "150px", background: "none", color: "red" }}
+          >
             remove
           </button>
         </div>
         <div>
-          <button style={{ background: "none" }}>+</button>
+          <button
+            onClick={() => dispatch(increase({ id }))}
+            style={{ background: "none" }}
+          >
+            +
+          </button>
           {amount}
-          <button style={{ background: "none" }}>-</button>
+          <button
+            onClick={() => dispatch(decrease({ id }))}
+            style={{ background: "none" }}
+          >
+            -
+          </button>
         </div>
       </div>
     );
@@ -49,8 +63,8 @@ const Cart = () => {
         })}
       </div>
       <div>
-        <h2>Total: ${total}</h2>
-        <button onClick={() => dispatch(clearCart())}>CLEAR CART</button>
+        <h2>Total: ${total.toFixed(2)}</h2>
+        <button onClick={() => dispatch(openModal())}>CLEAR CART</button>
       </div>
     </div>
   );
